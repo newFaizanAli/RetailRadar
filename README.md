@@ -68,4 +68,41 @@ Login via CLI:
 huggingface-cli login
 ```
 
+Alternatively, in Python:
+
+```bash
+from huggingface_hub import login
+login(token="your_token_here")
+```
+
+🧠 4. Run the Application
+
+Backend
+
+```bash
+cd backend
+node index.js
+```
+Frontend
+
+```bash
+cd ../frontend
+npm run dev
+```
+
+📌 Example Use Case
+Search your competitor’s product on Daraz, Amazon, or OLX.
+
+RetailRadar scrapes product info like price, ratings, and location.
+
+AI analyzes that data to:
+
+Suggest how your product should be priced.
+
+Recommend a product name optimized for search.
+
+Generate marketing-friendly tags and descriptions.
+
+🤝 Contributing
+PRs are welcome! If you have ideas to improve scraping accuracy, enhance UI, or integrate better AI models — feel free to fork & contribute!
 
