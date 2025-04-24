@@ -42,3 +42,30 @@ cd retail-radar
 cd frontend
 npm install
 
+Node.js Backend
+
+cd ../backend
+npm install
+
+
+Python AI Engine
+
+pip install -r requirements.txt
+
+
+```
+
+🔑 3. Hugging Face AI Setup (For SEO Optimization Features)
+If you want to use the AI model for SEO-friendly suggestions, you'll need a Hugging Face token:
+
+Sign up: https://huggingface.co/join
+
+Get your access token: https://huggingface.co/settings/tokens
+
+Login via CLI:
+
+```bash
+huggingface-cli login
+```
+
+
