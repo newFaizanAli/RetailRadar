@@ -26,4 +26,14 @@ retail-radar/ │ ├── frontend/ # React.js frontend │ └── ...
 │ ├── backend/ # Node.js backend │ └── generate_text.py (Python AI integration) │ ├── README.md # This file └── .gitignore # Root .gitignore
 
 
+---
+
+## 🚀 Usage
+
+### 📥 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/retail-radar.git
+cd retail-radar
+
 
