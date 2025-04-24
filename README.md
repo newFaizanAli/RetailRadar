@@ -37,3 +37,8 @@ git clone https://github.com/yourusername/retail-radar.git
 cd retail-radar
 
 
+📦 2. Install Dependencies
+
+cd frontend
+npm install
+
