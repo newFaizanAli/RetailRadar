@@ -22,45 +22,8 @@
 
 ---
 
-## 🖼️ Demo
-
-Coming soon... 🚧
-
----
-
-## 🔧 Project Structure
-
-```bash
-
-
 retail-radar/ │ ├── frontend/ # React.js frontend │ └── ...
 │ ├── backend/ # Node.js backend │ └── generate_text.py (Python AI integration) │ ├── README.md # This file └── .gitignore # Root .gitignore
 
----
 
-## 🚀 Usage
 
-### 📥 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/retail-radar.git
-cd retail-radar
-
-📦 2. Install Dependencies
-React Frontend
-bash
-Copy
-Edit
-cd frontend
-npm install
-Node.js Backend
-bash
-Copy
-Edit
-cd ../backend
-npm install
-Python AI Engine
-bash
-Copy
-Edit
-pip install -r requirements.txt
