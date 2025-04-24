@@ -1,32 +1,47 @@
-# RetailRadar-
-RetailRadar is an AI-powered product research tool that scrapes data from Daraz, Amazon, and OLX to help you analyze market trends, monitor competitor pricing, and generate SEO-friendly product names, descriptions, tags, and ideal pricing — all to boost your sales and profits.
-🔍 RetailRadar — AI-Powered Product Strategy Toolkit for Smart Sellers
-RetailRadar is a powerful, open-source tool that helps you analyze the e-commerce market and boost your product sales using real-time data and AI-driven suggestions.
+# 🚀 RetailRadar
 
-🚀 Built with React, Node.js (Express), and Python, this tool scrapes product data from top platforms like Daraz, Amazon, and OLX, then processes it to uncover market insights and competitive strategies.
+**RetailRadar** is a smart e-commerce intelligence tool built with **React**, **Node.js**, **Express**, and **Python**. It helps sellers gain deep insights into market trends by scraping data from top marketplaces like **Daraz**, **Amazon**, and **OLX**, and leveraging **AI-powered product analysis** to boost sales.
 
-🧠 What It Does:
-🔎 Scrapes market data (price, ratings, sales, competitors) from Daraz, Amazon, and OLX.
+> 🔍 Scrape. 📊 Analyze. 🤖 Optimize.
 
-📊 Analyzes product trends — understand what's selling and at what price.
+---
 
-🤖 AI Assistant — evaluates your product against the market and gives:
+## ✨ Features
 
-SEO-friendly product name
+- 🛒 **Multi-Market Scraper** – Automatically fetches product data from **Daraz**, **Amazon**, and **OLX**
+- 📈 **Sales & Market Analytics** – Understand product pricing, selling rate, top-performing items, and competitors
+- 🤖 **AI Product Optimization** – Generate:
+  - SEO-Friendly Product Names
+  - Engaging Descriptions
+  - Smart Tags
+  - Competitive Price Suggestions
+- 📦 **Tech Stack**:
+  - Frontend: **React.js**
+  - Backend: **Node.js + Express**
+  - AI Layer: **Python + HuggingFace Transformers**
 
-Compelling short description
+---
 
-Strategic tags
+## 🖼️ Demo
 
-Data-driven price range suggestions
+Coming soon... 🚧
 
-💡 Predict your product’s future market position before launch.
+---
 
-📈 Maximize profitability and competitiveness with data-backed decisions.
+## 🔧 Project Structure
+retail-radar/ │ ├── frontend/ # React.js frontend │ └── ...
+│ ├── backend/ # Node.js backend │ └── generate_text.py (Python AI integration) │ ├── README.md # This file └── .gitignore # Root .gitignore
 
-🎯 Who It’s For:
-E-commerce sellers looking to improve listings and visibility.
+yaml
+Copy
+Edit
 
-Developers building product research or dropshipping tools.
+---
 
-Entrepreneurs analyzing market gaps in the Pakistani or global eCom space
+## 🚀 Usage
+
+### 📥 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/retail-radar.git
+cd retail-radar
