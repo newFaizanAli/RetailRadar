@@ -1,5 +1,4 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import HomePage from "./pages/Home";
 import NotFoundPage from "./pages/NotFound";
 import HuntingPage from "./pages/Hunting";
 import MainLayout from "./layout/MainLayout";
@@ -11,8 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/hunting" element={<HuntingPage />} />
+          <Route index element={<HuntingPage />} />
           <Route path="/hunting/products" element={<HuntProducts />} />
           <Route path="/hunting/products/recomand" element={<ProductRecomand />} />
           <Route path="*" element={<NotFoundPage />} />

@@ -8,7 +8,7 @@ const InputField = ({
   onChange,
   className,
   placeholder,
-  defaultValue
+  defaultValue,
 }) => {
   return (
     <input

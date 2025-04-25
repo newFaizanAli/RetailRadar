@@ -24,7 +24,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
 server.use(bodyParser.urlencoded({ extended: true }));
-const { exec, spawn } = require("child_process");
+const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 const upload = multer({ dest: "uploads/" });
@@ -38,44 +38,46 @@ const { analysisProductPrompt, generateAnalyse } = require("./lib/functions");
 
 server.post("/product-hunting/:productName?/:platformName?", fetchProductData);
 
-// 1) through HuggingFace API
+server.post("/analyze-products", async (req, res) => {
+  try {
+    const { products, huggingfaceKey, analyseWay } = req.body;
 
-// server.post("/analyze-products", generateAnalyse);
+    if (analyseWay === "huggingface") {
+      const result = await generateAnalyse(products, huggingfaceKey);
 
-// 2) through pipeline transformers
+      return res.json({ ...result });
+    } else {
+      const prompt = analysisProductPrompt(products);
 
-// server.post("/analyze-products", async (req, res) => {
-//   const products = req?.body?.products;
+      const scriptPath = path.join(__dirname, "generate_text.py");
+      const pythonProcess = spawn("python", [scriptPath, prompt]);
 
-//   const prompt = analysisProductPrompt(products);
+      let result = "";
+      let errorOutput = "";
 
-//   const scriptPath = path.join(__dirname, "generate_text.py");
+      pythonProcess.stdout.on("data", (data) => {
+        result += data.toString();
+      });
 
-//   const pythonProcess = spawn("python", [scriptPath, prompt]);
+      pythonProcess.stderr.on("data", (data) => {
+        errorOutput += data.toString();
+      });
 
-//   let result = "";
-//   let errorOutput = "";
+      pythonProcess.on("close", (code) => {
+        if (code !== 0) {
+          return res.json({
+            error: `Script execution failed, ${errorOutput} | Consider using a HuggingFace API key for better reliability.`,
+          });
+        }
 
-//   pythonProcess.stdout.on("data", (data) => {
-//     result += data.toString();
-//   });
-
-//   pythonProcess.stderr.on("data", (data) => {
-//     errorOutput += data.toString();
-//   });
-
-//   pythonProcess.on("close", (code) => {
-//     if (code !== 0) {
-//       console.error("Python script error:", errorOutput);
-//       return res
-//         .status(500)
-//         .json({ error: "Script execution failed", details: errorOutput });
-//     }
-
-//     console.log("Generated Result:", result.trim());
-//     return res.json({ success: true, result: result.trim() });
-//   });
-// });
+        console.log("Generated Result:", result.trim());
+        return res.json({ success: true, result: result.trim() });
+      });
+    }
+  } catch (e) {
+    res.json({ error: err.message });
+  }
+});
 
 server.post("/predict", upload.single("image"), async (req, res) => {
   const imagePath = path.join(__dirname, req.file.path);
@@ -100,14 +102,6 @@ server.post("/predict", upload.single("image"), async (req, res) => {
     success: true,
     predictions, // will return label + probability
   });
-});
-
-server.get("/", (req, resp) => {
-  try {
-    resp.json({ message: "Server working" });
-  } catch (e) {
-    console.log(e.message);
-  }
 });
 
 server.listen(PORT, () => {

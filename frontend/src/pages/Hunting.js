@@ -3,12 +3,11 @@ import Button from "../components/elements/Button";
 import InputField from "../components/elements/InputField";
 import { useHandleFetch } from "../components/lib/custom_hooks/useHandleFetch ";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/elements/Loading";
 
 const HuntingPage = () => {
-  const { handleFetch } = useHandleFetch();
+  const { handleFetch, isLoading } = useHandleFetch();
   const navigate = useNavigate();
-
-  // const [huntProducts, setHuntProducts] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState({
     productName: "",
@@ -42,18 +41,16 @@ const HuntingPage = () => {
       .replace(/\s+/g, "+");
     const formattedPlatform = searchQuery.platformName.trim().toLowerCase();
 
-
     const result = await handleFetch(
       "POST",
       `/product-hunting/${formattedProductName}/${formattedPlatform}`
     );
-    
-    if(result){
-      navigate('/hunting/products', {
-        state : {products : result?.products, searchQuery}
-      })
-    }
 
+    if (result) {
+      navigate("/hunting/products", {
+        state: { products: result?.products, searchQuery },
+      });
+    }
   }, [handleFetch, searchQuery, navigate]);
 
   return (
@@ -73,6 +70,7 @@ const HuntingPage = () => {
               type="file"
               accept="image/*"
               onChange={(e) => setImageFile(e.target.files[0])}
+              
             />
           </div>
           <Button
@@ -83,6 +81,9 @@ const HuntingPage = () => {
         </div>
 
         {/* 🔍 Text-based Hunting Section */}
+        <label className="block text-md font-medium mb-1 text-gray-700">
+          Scrap your Product
+        </label>
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <InputField
             name="productName"
@@ -96,34 +97,34 @@ const HuntingPage = () => {
               })
             }
           />
-          <InputField
-            name="platformName"
-            className="w-full"
-            placeholder="Enter Platform (e.g., amazon, daraz)"
+          <select
             value={searchQuery.platformName}
+            name="platformName"
             onChange={(e) =>
               setSearchQuery({
                 ...searchQuery,
                 [e.target.name]: e.target.value,
               })
             }
-          />
+            className="w-full px-4 py-3 border rounded-md text-gray-700"
+          >
+            <option value="">Select Platform</option>
+            <option value="daraz">Daraz</option>
+            <option value="amazon">Amazon</option>
+            <option value="olx">OLX</option>
+          </select>
         </div>
 
         <div className="flex gap-2 justify-center">
-        <Button
-          className="w-full md:w-48 bg-indigo-700 text-white hover:bg-indigo-800 transition"
-          innerText="Hunt Product"
-          onClick={fetchProduct}
-        />
-
-        {/* {huntProducts && (
-          <Button
-            className="w-full md:w-48 bg-gray-600/30 hover:bg-hover-800 text-gray-900 transition"
-            innerText="Hunt Products"
-            onClick={() => navigate("/hunting/prducts")}
-          />
-        )} */}
+          {!isLoading ? (
+            <Button
+              className="w-full md:w-48 bg-indigo-700 text-white hover:bg-indigo-800 transition"
+              innerText="Hunt Product"
+              onClick={fetchProduct}
+            />
+          ) : (
+            <Loading />
+          )}
         </div>
       </div>
     </div>

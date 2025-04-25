@@ -10,35 +10,31 @@ const analysisProductPrompt = (products) => {
     })
     .join("\n\n");
 
-  const prompt = `You are an expert in e-commerce SEO and digital product strategy.
+  const prompt = `
+  You are an expert in e-commerce SEO and digital product strategy.
 
-    I am planning to launch a new laptop product in the Pakistani market. Based on the following data of similar products being sold, please analyze the market and provide **SEO-friendly suggestions** for my own product. The suggestions should include:
+  I am planning to launch a laptop in the Pakistani market. I’ve collected product data of similar laptops already being sold. Based on the overall trends and this market data, give me ONE complete suggestion.
 
-    - SEO-friendly Name
-    - Short Description
-    - Tags
-    - Recommended Price Range
+  DO NOT return a list of the products I gave or repeat any part of this prompt.
 
-    The data provided below includes product names, prices, ratings, sales, and locations of similar products. Based on this market information, provide the most suitable suggestions to optimize my product's chances for increased sales.
+  Instead, act like a product strategist and advisor, and give your expert recommendation in the following format:
 
-    Here is the market data:
+  "- Based on the analysis of similar market products, here is my recommendation for your new product:
 
-    ${productDescriptions}
+  - SEO-friendly Name:
+  - Short Description:
+  - Tags:
+  - Recommended Price Range:"
 
-    Please provide the following:
-    1. SEO-friendly name for my product.
-    2. A short description of my product that is SEO-friendly.
-    3. Suggested tags.
-    4. A price range for my product based on market trends and the provided data.
+  Here is the market data:
 
-    Only provide the SEO suggestions. Do not repeat any of the input data.`;
+  ${productDescriptions}
+  `;
 
   return prompt;
 };
 
-const generateAnalyse = () => async (req, res) => {
-  const products = req?.body?.products;
-
+const generateAnalyse = async (products, HUGGINGFACE_API_KEY) => {
   const model = "mistralai/Mixtral-8x7B-Instruct-v0.1";
 
   const prompt = analysisProductPrompt(products);
@@ -61,22 +57,23 @@ const generateAnalyse = () => async (req, res) => {
     );
 
     if (!apiResponse.ok) {
-      const textResponse = await apiResponse.text();
-      throw new Error(
-        `Hugging Face request failed with status ${apiResponse.status}: ${textResponse}`
-      );
+      const textResponse = await apiResponse.json();
+
+      return {
+        error: `Hugging Face API key | ${textResponse?.error}`,
+      };
     }
 
     const data = await apiResponse.json();
 
-    res.json({ data, success: true });
+    return { data, success: true };
   } catch (err) {
     console.error("Hugging Face error:", err.message);
-    res.status(500).json({ error: err.message });
+    return { error: err.message };
   }
 };
 
 module.exports = {
   analysisProductPrompt,
-  generateAnalyse
+  generateAnalyse,
 };

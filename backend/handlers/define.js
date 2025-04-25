@@ -1,6 +1,5 @@
 const puppeteer = require("puppeteer");
 
-
 // hunting
 
 const fetchProductData = async (req, res) => {
@@ -102,10 +101,43 @@ const fetchProductData = async (req, res) => {
       return res.json({ success: true, products });
     }
 
+    // ================= OLX =================
+    if (formattedPlatform === "olx") {
+      const olxURL = `https://www.olx.com.pk/items/q-${encodeURIComponent(
+        productName.trim()
+      )}`;
+
+      await page.goto(olxURL, { waitUntil: "domcontentloaded", timeout: 0 });
+
+      // Wait for OLX product articles to load
+      await page.waitForSelector("article._68441e28", { timeout: 30000 });
+
+      const products = await page.evaluate(() => {
+        const productElements = document.querySelectorAll("article._68441e28");
+
+        return Array.from(productElements).map((el) => {
+          const name = el.querySelector("h2._941ffa5e")?.innerText || "N/A";
+          const price = el.querySelector("._1f2a2b47")?.innerText || "N/A";
+          const location =
+            el.querySelector("span._77000f35")?.innerText || "N/A";
+          const relativeLink =
+            el.querySelector('a[href*="iid-"]')?.getAttribute("href") || "";
+          const link = relativeLink
+            ? `https://www.olx.com.pk${relativeLink}`
+            : "N/A";
+
+          return { name, price, location, link };
+        });
+      });
+
+
+      return res.json({ success: true, products });
+    }
+
     return res.json({
       success: false,
       message:
-        "Platform not supported. Please choose either 'amazon' or 'daraz'.",
+        "Platform not supported. Please choose either 'amazon', 'olx' or 'daraz'.",
     });
   } catch (error) {
     return res.json({ success: false, message: error.message });
@@ -115,8 +147,6 @@ const fetchProductData = async (req, res) => {
     }
   }
 };
-
-
 
 module.exports = {
   fetchProductData,
